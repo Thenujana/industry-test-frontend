@@ -9,7 +9,7 @@ import { Employee } from '../../models/employee.model';
   selector: 'app-add-employees',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
-  providers: [EmployeeService], 
+  providers: [EmployeeService],
   templateUrl: './add-employees.component.html',
   styleUrls: ['./add-employees.component.css']
 })
@@ -32,7 +32,7 @@ export class AddEmployeesComponent {
   onSubmit(): void {
     if (this.employeeForm.invalid) return;
 
-    const newEmployee = this.employeeForm.value;
+    const newEmployee: Employee = this.employeeForm.value;
 
     this.employeeService.addEmployee(newEmployee).subscribe({
       next: () => {

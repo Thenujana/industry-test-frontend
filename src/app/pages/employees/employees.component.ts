@@ -47,7 +47,6 @@ export class EmployeesComponent implements OnInit {
     const employee: Employee = this.employeeForm.value;
 
     if (this.isEditing && this.editingId !== null) {
-      // Editing existing employee
       const updatedEmployee: Employee = { ...employee, id: this.editingId };
       this.employeeService.updateEmployee(updatedEmployee).subscribe({
         next: () => {
@@ -61,7 +60,6 @@ export class EmployeesComponent implements OnInit {
         }
       });
     } else {
-      // Creating new employee
       this.employeeService.addEmployee(employee).subscribe({
         next: () => {
           this.successMessage = 'Employee added successfully!';
