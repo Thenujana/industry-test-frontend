@@ -1,7 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { EmployeeService } from '../../service/employee.service';
 import { Employee } from '../../models/employee.model';
 
@@ -15,12 +16,13 @@ import { Employee } from '../../models/employee.model';
 })
 export class AddEmployeesComponent {
   employeeForm: FormGroup;
-  successMessage: string = '';
-  errorMessage: string = '';
+  successMessage = '';
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private router: Router
   ) {
     this.employeeForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100), Validators.pattern(/^[A-Za-z ]+$/)]],
@@ -37,13 +39,12 @@ export class AddEmployeesComponent {
     this.employeeService.addEmployee(newEmployee).subscribe({
       next: () => {
         this.successMessage = 'Employee added successfully!';
-        this.errorMessage = '';
         this.employeeForm.reset();
+        setTimeout(() => this.router.navigate(['/employees']), 1000); // redirect after success
       },
       error: (err) => {
         console.error('Error adding employee:', err);
         this.errorMessage = 'Failed to add employee. Please try again.';
-        this.successMessage = '';
       }
     });
   }
