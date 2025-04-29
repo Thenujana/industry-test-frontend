@@ -81,19 +81,6 @@ export class EmployeesComponent implements OnInit {
     this.isEditing = true;
   }
 
-  deleteEmployee(id: number): void {
-    this.employeeService.deleteEmployee(id).subscribe({
-      next: () => {
-        this.successMessage = 'Employee deleted';
-        this.loadEmployees();
-      },
-      error: (err) => {
-        this.errorMessage = 'Delete failed';
-        console.error(err);
-      }
-    });
-  }
-
   resetForm(): void {
     this.employeeForm.reset();
     this.isEditing = false;
@@ -101,5 +88,24 @@ export class EmployeesComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
   }
+  deleteEmployee(id?: number): void {
+    if (id === undefined) {
+      console.error('Employee ID is undefined.');
+      return;
+    }
+  
+    if (confirm('Are you sure you want to delete this employee?')) {
+      this.employeeService.deleteEmployee(id).subscribe({
+        next: () => {
+          this.employees = this.employees.filter(emp => emp.id !== id);
+          console.log('Employee deleted successfully');
+        },
+        error: err => {
+          console.error('Failed to delete employee', err);
+        }
+      });
+    }
+  }
+  
   
 }
